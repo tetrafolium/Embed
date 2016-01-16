@@ -90,11 +90,27 @@ class Html extends Provider implements ProviderInterface
     /**
      * {@inheritdoc}
      */
-    public function getSource()
+    public function getFeeds()
     {
-        $feeds = $this->bag->get('feeds');
+        return $this->bag->get('feeds');
+    }
 
-        return isset($feeds[0]) ? $feeds[0] : null;
+    /**
+     * {@inheritdoc}
+     */
+    public function getData()
+    {
+        if (!($html = $this->request->getHtmlContent())) {
+            return;
+        }
+
+        $data = [];
+
+        if ($jsonLd = Schemas\JsonLd::getData($html)) {
+            $data['json-ld'] = $jsonLd;
+        }
+
+        return $data;
     }
 
     /**

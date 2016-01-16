@@ -38,11 +38,18 @@ interface DataInterface
     public function getTags();
 
     /**
-     * Gets the source url (feed, api, etc).
+     * Gets the feeds.
      *
-     * @return string|null
+     * @return array|null
      */
-    public function getSource();
+    public function getFeeds();
+
+    /**
+     * Gets the schemes data.
+     *
+     * @return array|null
+     */
+    public function getData();
 
     /**
      * Gets the embed code.

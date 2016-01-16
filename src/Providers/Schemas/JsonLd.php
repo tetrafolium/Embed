@@ -1,40 +1,37 @@
 <?php
 
-namespace Embed\Providers;
+namespace Embed\Providers\Schemas;
 
 /**
  * JsonLd provider.
  *
  * Load the json-ld data of an url and store it
  */
-class JsonLd extends Provider implements ProviderInterface
+class JsonLd implements SchemaInterface
 {
     /**
      * {@inheritdoc}
      */
-    public function run()
+    public static function getData(\DOMDocument $html)
     {
-        if (!($html = $this->request->getHtmlContent())) {
-            return false;
-        }
+        $data = [];
 
         foreach ($html->getElementsByTagName('script') as $script) {
             if ($script->hasAttribute('type') && strtolower($script->getAttribute('type')) === 'application/ld+json') {
                 $value = trim($script->nodeValue);
 
                 if (empty($value)) {
-                    return false;
+                    continue;
                 }
 
                 try {
-                    $json = json_decode($value, true);
-                    $this->bag->set($json);
+                    $data[] = json_decode($value, true);
                 } catch (\Exception $exception) {
-                    return false;
+                    continue;
                 }
-
-                break;
             }
         }
+
+        return $data;
     }
 }

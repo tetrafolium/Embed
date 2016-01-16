@@ -199,9 +199,26 @@ abstract class Adapter
     /**
      * {@inheritdoc}
      */
-    public function getSource()
+    public function getFeeds()
     {
-        return Utils::getFirstValue(Utils::getData($this->providers, 'source', $this->request));
+        return Utils::getAllValues(Utils::getData($this->providers, 'feeds', $this->request));
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getData()
+    {
+        $data = [];
+        foreach ($this->providers as $key => $provider) {
+            $providerData = $provider->getData();
+
+            if (!empty($providerData)) {
+                $data = array_merge_recursive($data, $providerData);
+            }
+        }
+        
+        return $data;
     }
 
     /**

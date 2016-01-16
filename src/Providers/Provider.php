@@ -56,10 +56,18 @@ abstract class Provider
     {
         return [];
     }
+
     /**
      * {@inheritdoc}
      */
-    public function getSource()
+    public function getFeeds()
+    {
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getData()
     {
     }
 
